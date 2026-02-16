@@ -2,13 +2,19 @@ import { getColorIndex } from "@/shared/utils/color";
 import { loadImage } from "@/shared/utils/image";
 
 export async function fetchCanvasImageBlob(day: number): Promise<Blob> {
-  const timestamp = Date.now();
-  const res = await fetch(
-    `https://basepaint.xyz/api/art/image?day=${day}&scale=1&t=${timestamp}`,
-    { cache: "no-store" }
-  );
-  if (!res.ok) throw new Error(`Error fetching canvas: ${res.statusText}`);
-  return res.blob();
+  const url = `https://basepaint.xyz/api/art/image?day=${day}&scale=1`;
+
+  // Try direct fetch first, fall back to CORS proxy if blocked
+  try {
+    const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.blob();
+  } catch {
+    const proxyUrl = `https://api.codetabs.com/v1/proxy/?quest=${encodeURIComponent(url)}`;
+    const res = await fetch(proxyUrl);
+    if (!res.ok) throw new Error(`Error fetching canvas: ${res.statusText}`);
+    return res.blob();
+  }
 }
 
 export function processImageToMap(

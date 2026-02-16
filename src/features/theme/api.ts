@@ -8,11 +8,7 @@ export function getDay(): number {
 }
 
 export async function fetchTheme(day: number): Promise<ThemeData> {
-  const res = await fetch(
-    `/api/basepaint?url=${encodeURIComponent(
-      `https://basepaint.xyz/api/theme/${day}`
-    )}`
-  );
+  const res = await fetch(`https://basepaint.xyz/api/theme/${day}`);
   if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
   return res.json();
 }

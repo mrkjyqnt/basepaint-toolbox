@@ -4,9 +4,7 @@ import { loadImage } from "@/shared/utils/image";
 export async function fetchCanvasImageBlob(day: number): Promise<Blob> {
   const timestamp = Date.now();
   const res = await fetch(
-    `/api/basepaint?url=${encodeURIComponent(
-      `https://basepaint.xyz/api/art/image?day=${day}&scale=1&t=${timestamp}`
-    )}`,
+    `https://basepaint.xyz/api/art/image?day=${day}&scale=1&t=${timestamp}`,
     { cache: "no-store" }
   );
   if (!res.ok) throw new Error(`Error fetching canvas: ${res.statusText}`);

@@ -8,9 +8,18 @@ export function getDay(): number {
 }
 
 export async function fetchTheme(day: number): Promise<ThemeData> {
-  const res = await fetch(`https://basepaint.xyz/api/theme/${day}`);
-  if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-  return res.json();
+  const url = `https://basepaint.xyz/api/theme/${day}`;
+
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  } catch {
+    const proxyUrl = `https://api.codetabs.com/v1/proxy/?quest=${encodeURIComponent(url)}`;
+    const res = await fetch(proxyUrl);
+    if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+    return res.json();
+  }
 }
 
 export function generatePaletteBlob(palette: string[]): Promise<Blob> {

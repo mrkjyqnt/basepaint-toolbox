@@ -1,5 +1,5 @@
 import { PixelStroke } from "@/shared/types";
-import { getColorIndex } from "@/shared/utils/color";
+import { buildPaletteLookup, getColorIndexFast } from "@/shared/utils/color";
 
 export function processImage(
   image: HTMLImageElement,
@@ -12,19 +12,16 @@ export function processImage(
   ctx.drawImage(image, 0, 0);
 
   const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+  const lookup = buildPaletteLookup(palette);
   const result: PixelStroke[] = [];
 
   for (let y = 0; y < canvas.height; y++) {
     for (let x = 0; x < canvas.width; x++) {
       const index = (y * canvas.width + x) * 4;
-      const r = data[index];
-      const g = data[index + 1];
-      const b = data[index + 2];
       const a = data[index + 3];
-
       if (a === 0) continue;
 
-      const color = getColorIndex(r, g, b, palette);
+      const color = getColorIndexFast(data[index], data[index + 1], data[index + 2], lookup);
       if (color !== -1) {
         result.push({ point: { x, y }, color });
       }
@@ -46,19 +43,16 @@ export function processImageWithFilter(
   ctx.drawImage(image, 0, 0);
 
   const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+  const lookup = buildPaletteLookup(palette);
   const result: PixelStroke[] = [];
 
   for (let y = 0; y < canvas.height; y++) {
     for (let x = 0; x < canvas.width; x++) {
       const index = (y * canvas.width + x) * 4;
-      const r = data[index];
-      const g = data[index + 1];
-      const b = data[index + 2];
       const a = data[index + 3];
-
       if (a === 0) continue;
 
-      const color = getColorIndex(r, g, b, palette);
+      const color = getColorIndexFast(data[index], data[index + 1], data[index + 2], lookup);
       if (color !== -1) {
         const key = `${x},${y}`;
         const currentColor = currentCanvasPixels.get(key);

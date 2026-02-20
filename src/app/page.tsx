@@ -78,10 +78,10 @@ export default function Home() {
 
   return (
     <Card className="w-full max-w-2xl">
-      <CardContent className="p-4 sm:p-6 md:p-8">
+      <CardContent className="p-3 sm:p-6 md:p-8">
         <div className="flex items-center justify-between mb-1">
-          <div />
-          <h1 className="text-3xl sm:text-4xl font-bold">BASEPAINT TOOLBOX</h1>
+          <div className="w-8" />
+          <h1 className="text-xl sm:text-3xl md:text-4xl font-bold text-center">BASEPAINT TOOLBOX</h1>
           <ThemeToggle />
         </div>
         {theme ? (
@@ -96,11 +96,11 @@ export default function Home() {
 
         {/* Tabs */}
         <Tabs defaultValue={theme ? "singleImage" : "canvasExplorer"} className="w-full">
-          <TabsList className="w-full grid grid-cols-4">
-            <TabsTrigger value="singleImage" disabled={!theme}>Frames</TabsTrigger>
-            <TabsTrigger value="animation" disabled={!theme}>Animation</TabsTrigger>
-            <TabsTrigger value="colorReplace">Colors</TabsTrigger>
-            <TabsTrigger value="canvasExplorer">Canvas</TabsTrigger>
+          <TabsList className="w-full flex overflow-x-auto">
+            <TabsTrigger value="singleImage" disabled={!theme} className="flex-1 min-w-0 text-xs sm:text-sm">Frames</TabsTrigger>
+            <TabsTrigger value="animation" disabled={!theme} className="flex-1 min-w-0 text-xs sm:text-sm">Animation</TabsTrigger>
+            <TabsTrigger value="colorReplace" className="flex-1 min-w-0 text-xs sm:text-sm">Colors</TabsTrigger>
+            <TabsTrigger value="canvasExplorer" className="flex-1 min-w-0 text-xs sm:text-sm">Canvas</TabsTrigger>
           </TabsList>
 
           <TabsContent value="singleImage" className="mt-4">

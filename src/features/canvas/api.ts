@@ -1,4 +1,4 @@
-import { getColorIndex } from "@/shared/utils/color";
+import { buildPaletteLookup, getColorIndexFast } from "@/shared/utils/color";
 import { loadImage } from "@/shared/utils/image";
 
 export async function fetchCanvasImageBlob(day: number): Promise<Blob> {
@@ -34,19 +34,16 @@ export function processImageToMap(
   }
 
   const data = ctx.getImageData(0, 0, 256, 256).data;
+  const lookup = buildPaletteLookup(palette);
   const pixelMap = new Map<string, number>();
 
   for (let y = 0; y < 256; y++) {
     for (let x = 0; x < 256; x++) {
       const index = (y * 256 + x) * 4;
-      const r = data[index];
-      const g = data[index + 1];
-      const b = data[index + 2];
       const a = data[index + 3];
-
       if (a < 128) continue;
 
-      const color = getColorIndex(r, g, b, palette);
+      const color = getColorIndexFast(data[index], data[index + 1], data[index + 2], lookup);
       if (color !== -1) {
         pixelMap.set(`${x},${y}`, color);
       }

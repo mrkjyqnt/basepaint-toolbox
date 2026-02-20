@@ -23,7 +23,7 @@ export default function RootLayout({
       </head>
       <body>
         <TooltipProvider>
-          <main className="flex min-h-screen items-start justify-center p-4 sm:p-6 md:p-8">
+          <main className="flex min-h-screen items-start justify-center p-2 sm:p-6 md:p-8">
             {children}
           </main>
         </TooltipProvider>

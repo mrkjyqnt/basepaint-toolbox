@@ -82,11 +82,12 @@ export default function CanvasExplorerPanel() {
   return (
     <div className="space-y-4">
       {/* Day picker */}
-      <div className="flex flex-col sm:flex-row gap-3 items-center">
-        <div className="flex items-center gap-1 w-full sm:w-auto">
+      <div className="flex flex-col gap-3">
+        <div className="flex items-center gap-1 w-full">
           <Button
             variant="outline"
             size="icon"
+            className="shrink-0"
             onClick={() => stepDay(-1)}
             disabled={loading || parseInt(dayInput) <= 0}
             aria-label="Previous day"
@@ -100,37 +101,37 @@ export default function CanvasExplorerPanel() {
             onKeyDown={(e) => e.key === "Enter" && handleLoad()}
             min={0}
             max={today}
-            className="w-24 text-center"
+            className="w-20 text-center flex-shrink-0"
           />
           <Button
             variant="outline"
             size="icon"
+            className="shrink-0"
             onClick={() => stepDay(1)}
             disabled={loading || parseInt(dayInput) >= today}
             aria-label="Next day"
           >
             <ChevronRight className="h-4 w-4" />
           </Button>
+          <Button
+            variant="secondary"
+            size="sm"
+            className="shrink-0 ml-auto"
+            onClick={() => {
+              setDayInput(String(today));
+            }}
+          >
+            Today
+          </Button>
         </div>
 
-        <Button onClick={handleLoad} disabled={loading} className="w-full sm:w-auto">
+        <Button onClick={handleLoad} disabled={loading} className="w-full">
           {loading ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           ) : (
             <Search className="mr-2 h-4 w-4" />
           )}
           {loading ? "Loading..." : "Load Day"}
-        </Button>
-
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={() => {
-            setDayInput(String(today));
-          }}
-          className="w-full sm:w-auto"
-        >
-          Today ({today})
         </Button>
       </div>
 

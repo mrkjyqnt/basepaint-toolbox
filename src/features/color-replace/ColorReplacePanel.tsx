@@ -82,31 +82,33 @@ export default function ColorReplacePanel() {
   return (
     <div className="space-y-4">
       {/* Load + Download buttons */}
-      <div className="flex flex-col sm:flex-row gap-3">
-        <Button
-          className="w-full sm:w-auto"
-          onClick={() => fileInputRef.current?.click()}
-        >
-          <Upload className="mr-2 h-4 w-4" />
-          Load Image
-        </Button>
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/png"
-          className="hidden"
-          onChange={handleLoadImage}
-        />
+      <div className="flex flex-col gap-3">
+        <div className="flex gap-2">
+          <Button
+            className="flex-1"
+            onClick={() => fileInputRef.current?.click()}
+          >
+            <Upload className="mr-1 sm:mr-2 h-4 w-4 shrink-0" />
+            <span className="truncate">Load Image</span>
+          </Button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/png"
+            className="hidden"
+            onChange={handleLoadImage}
+          />
 
-        <Button
-          variant="outline"
-          className="w-full sm:w-auto"
-          disabled={!hasImage}
-          onClick={handleDownload}
-        >
-          <Download className="mr-2 h-4 w-4" />
-          Download Modified
-        </Button>
+          <Button
+            variant="outline"
+            className="flex-1"
+            disabled={!hasImage}
+            onClick={handleDownload}
+          >
+            <Download className="mr-1 sm:mr-2 h-4 w-4 shrink-0" />
+            <span className="truncate">Download</span>
+          </Button>
+        </div>
 
         {hasImage && (
           <div className="flex items-center gap-2 text-sm">

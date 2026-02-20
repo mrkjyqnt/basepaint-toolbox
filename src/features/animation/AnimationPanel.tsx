@@ -73,50 +73,46 @@ export default function AnimationPanel({ theme }: AnimationPanelProps) {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col sm:flex-row gap-4 items-start">
-        <div className="flex flex-col gap-3 w-full sm:w-auto">
-          <Button
-            className="w-full sm:w-[256px]"
-            onClick={() => fileInputRef.current?.click()}
-          >
-            <Upload className="mr-2 h-4 w-4" />
-            Load Multiple Frames
-          </Button>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            multiple
-            className="hidden"
-            onChange={handleLoadFrames}
-          />
+      <div className="flex flex-col gap-3">
+        <Button
+          className="w-full"
+          onClick={() => fileInputRef.current?.click()}
+        >
+          <Upload className="mr-2 h-4 w-4 shrink-0" />
+          Load Multiple Frames
+        </Button>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          multiple
+          className="hidden"
+          onChange={handleLoadFrames}
+        />
 
-          {frames.length > 0 && (
-            <p className="text-sm">
-              <strong>Frames loaded:</strong>{" "}
-              <Badge variant="secondary">{frames.length}</Badge>
-            </p>
-          )}
-        </div>
+        {frames.length > 0 && (
+          <p className="text-sm">
+            <strong>Frames loaded:</strong>{" "}
+            <Badge variant="secondary">{frames.length}</Badge>
+          </p>
+        )}
 
-        <div className="flex flex-col gap-3 w-full sm:w-auto">
-          <Button
-            variant="outline"
-            className="w-full sm:w-auto"
-            disabled={frames.length === 0 || processing}
-            onClick={handleProcess}
-          >
-            <Play className="mr-2 h-4 w-4" />
-            {status || "Process Frames"}
-          </Button>
+        <Button
+          variant="outline"
+          className="w-full"
+          disabled={frames.length === 0 || processing}
+          onClick={handleProcess}
+        >
+          <Play className="mr-2 h-4 w-4 shrink-0" />
+          {status || "Process Frames"}
+        </Button>
 
-          {totalPixelsResult !== null && (
-            <p className="text-sm font-bold">
-              Total pixels processed:{" "}
-              <Badge variant="secondary">{totalPixelsResult}</Badge>
-            </p>
-          )}
-        </div>
+        {totalPixelsResult !== null && (
+          <p className="text-sm font-bold">
+            Total pixels processed:{" "}
+            <Badge variant="secondary">{totalPixelsResult}</Badge>
+          </p>
+        )}
       </div>
 
       <p className="text-xs text-muted-foreground max-w-[500px]">

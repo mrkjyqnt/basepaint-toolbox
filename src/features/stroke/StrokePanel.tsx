@@ -31,6 +31,7 @@ export default function StrokePanel({ theme }: StrokePanelProps) {
   const [showBg, setShowBg] = useState(true);
   const [bgOpacity, setBgOpacity] = useState(40);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const cachedPixelsRef = useRef<PixelStroke[]>([]);
 
   // Fetch today's canvas as background
   useEffect(() => {
@@ -51,6 +52,7 @@ export default function StrokePanel({ theme }: StrokePanelProps) {
         setHasImage(true);
 
         const allPixels = processImage(img, theme.palette);
+        cachedPixelsRef.current = allPixels;
         setTotalPixels(allPixels.length);
         setFilteredPixels("Calculating...");
 
@@ -69,7 +71,9 @@ export default function StrokePanel({ theme }: StrokePanelProps) {
 
   const handleCopyStroke = useCallback(() => {
     if (!loadedImage) return;
-    const pixels = processImage(loadedImage, theme.palette);
+    const pixels = cachedPixelsRef.current.length > 0
+      ? cachedPixelsRef.current
+      : processImage(loadedImage, theme.palette);
     navigator.clipboard.writeText(JSON.stringify(pixels));
     setCopyStatus("Copied!");
     setTimeout(() => setCopyStatus(""), 2000);
@@ -219,12 +223,12 @@ export default function StrokePanel({ theme }: StrokePanelProps) {
 
         <Button
           variant="secondary"
-          className="w-full max-w-[256px]"
+          className="w-full max-w-[256px] text-xs sm:text-sm"
           disabled={!hasImage}
           onClick={handleCopyWithoutOverprinting}
         >
-          <ShieldOff className="mr-2 h-4 w-4" />
-          {copyStatus && copyStatus !== "Copied!" ? copyStatus : "Copy Without Overprinting"}
+          <ShieldOff className="mr-1 sm:mr-2 h-4 w-4 shrink-0" />
+          {copyStatus && copyStatus !== "Copied!" ? copyStatus : "Copy No Overprint"}
         </Button>
 
         {hasImage && (
